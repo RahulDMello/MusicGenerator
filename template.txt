@@ -1,0 +1,26 @@
+L:1/4
+K:G
+
+symbols
+A B C D E F G
+a b c d e f g
+
+Add ons
+"A"
+A/
+A1 A2 A4 A8 A16
+A# A-
+
+complicated expression
+A/2-
+
+0000100000000000(00000)00100
+AaBbCcDdEeFfGgZz(12486)"/#.-
+
+
+
+i will use 4 input pattern to guess the 5th note
+so architecture would be something like
+26 input per note each note going from 26 input layer to four individual 8 input hidden layer
+the 4 separate input->hidden layers will then combine to a common 12 unit hidden layer
+from there it will pass to a final 26 unit output layer

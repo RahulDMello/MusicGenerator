@@ -1,0 +1,6 @@
+104 input_l -> 52 hl1 -> 52 hl2 -> 26 output_l
+hidden units linear activation
+output unit sigmoid binary activation
+cost = mean squared error
+optimizer = adam optimizer
+model parameters "x" for inputs and "output" for outputs

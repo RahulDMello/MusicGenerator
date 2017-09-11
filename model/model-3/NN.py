@@ -115,30 +115,34 @@ def neural_network_model(data):
     #l2 = binary_activation(l2)
     
     output_name = tf.add(tf.matmul(l2, output_layer_name['weights']), output_layer_name['biases'])
-    ac_output_name = tf.nn.softmax(output_name)
+    output_name = tf.nn.softmax(output_name)
     
     output_attr = tf.add(tf.matmul(l2, output_layer_attr['weights']), output_layer_attr['biases'])
-    ac_output_attr = tf.sigmoid(output_attr)
+    output_attr = tf.tanh(output_attr)
     
     output_anum = tf.add(tf.matmul(l2, output_layer_anum['weights']), output_layer_anum['biases'])
-    ac_output_anum = tf.sigmoid(output_anum)
+    output_anum = tf.tanh(output_anum)
     
     output = tf.concat([output_name, output_attr, output_anum], 1)
-    ac_output = tf.concat([ac_output_name, ac_output_attr, ac_output_anum], 1)
+    
     #output = binary_activation(output)
-    ac_output = tf.identity(ac_output, name="output")
+    output = tf.identity(output, name="output")
+    tf.Print(output, [output])
     return output
     
     
 def cost_function(input, target, prediction):
-    output_1 =tf.slice(target,[0,0],[tf.shape(target)[0], 16])
-    pred_1 = tf.slice(prediction,[0,0],[tf.shape(target)[0], 16])
-    output_2_3 = tf.slice(target,[0,16],[tf.shape(target)[0], 10])
-    pred_2_3 = tf.slice(prediction,[0,16],[tf.shape(target)[0], 10])
-    cost = tf.nn.softmax_cross_entropy_with_logits(labels=output_1, logits=pred_1)
-    cost += tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=output_2_3, logits=pred_2_3))
-    cost = tf.reduce_mean(cost)
-    return cost
+    
+    init_cost = tf.reduce_mean((tf.square(tf.subtract(y, prediction))))
+    cost_multiplier = tf.Variable(10, dtype='float32')
+    print(input)
+    eq_1 = tf.cast(tf.equal(tf.slice(input,[0,0],[tf.shape(input)[0],26]), prediction), tf.float32)
+    eq_2 = tf.cast(tf.equal(tf.slice(input,[0,26],[tf.shape(input)[0],26]), prediction), tf.float32)
+    eq_3 = tf.cast(tf.equal(tf.slice(input,[0,2*26],[tf.shape(input)[0],26]), prediction), tf.float32)
+    eq_4 = tf.cast(tf.equal(tf.slice(input,[0,3*26],[tf.shape(input)[0], 26]), prediction), tf.float32)
+    cost_multiplier = tf.multiply(cost_multiplier, tf.reduce_mean(eq_1 + eq_2 + eq_3 + eq_4))
+    
+    return init_cost*cost_multiplier
 
 
 def train_neural_network(x):
@@ -147,7 +151,7 @@ def train_neural_network(x):
     #                    learning_rate = 0.001
     optimizer = tf.train.AdamOptimizer().minimize(cost)
     
-    hm_epochs = 1000
+    hm_epochs = 3500
     
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())

@@ -2,7 +2,7 @@ songFile = open("music-files-for-data-generation/1.txt")
 X_dataFile = open("data/X_train.csv", "w")
 Y_dataFile = open("data/Y_train.csv", "w")
 dataFile = open("data/data.csv", "w")
-totalSongs = 5
+totalSongs = 15
 data_point_list = ['A', 'A', 'A', 'A']
 notes_in_one_data_point = 4
 X_bytes_per_line = 107
@@ -13,8 +13,8 @@ X_bytes_per_line = 107
 AaBbCcDdEeFfGgZz12486"/#.-
 '''
 note_representation_dict = {"A":0,"a":1,"B":2,"b":3,"C":4,"c":5,"D":6,"d":7,"E":8,"e":9,
-                            "F":10,"f":11,"G":12,"g":13,"Z":14,"z":15,"1":16,"2":17,
-                            "4":18,"8":19,"16":20,'"':21,"/":22,"#":23,".":24,"-":25}
+                            "F":10,"f":11,"G":12,"g":13,"Z":14,"z":15,"#":16,".":17,
+                            "-":18,"/":19,"1":20,'"2':21,"4":22,"8":23,"16":24,"\"":25}
 
 def getNote():
     currNote = ['0'] * 26;

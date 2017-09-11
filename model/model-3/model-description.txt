@@ -1,0 +1,11 @@
+changed NN architecture to the following
+a 24 + 24 + 24 + 24 input layer each going into there individual 1st hidden layer for local encoding
+each 1st hidden layer output gets fed into a 26 unit hidden layer 2
+the 2nd hidden layer fires into 3 separate output layers first of which is a 16 units output layer with softmax activation that categorizes Aa-Gg\Zz
+2nd output layer is a 3 units layer addressed at attributes #,.,-
+3rd and final output layer is a 7 units layer which deals with numbers 00000 - 111111(binary) and quotes(") and /
+these 3 output layer are concatinated for the final output note
+all units accept the softmax output layer units have weighted sum tanh activation function
+
+problems : numbers too big wrt the 3rd 7 unit output layer
+solution: better cost function then RMSE

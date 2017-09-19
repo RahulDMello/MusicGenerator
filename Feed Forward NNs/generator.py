@@ -7,18 +7,20 @@ import random
 #for n in b.flat.notes:
 #    n.pitch.microtone = keyDetune[n.pitch.midi]
 b = converter.parse('sample.abc')
+b.insert(instrument.Violin())
 # b = converter.parse('| "G" D/2 D/2 | "G" E D G | "D" F2 D/2 D/2 | E D A | "G" G2 D/2 D/2 | d B G | "C" F E2- | E2 c/2 c/2 | "G" B G "D" A | "G" G2 |')
 # b = converter.parse("tinynotation: 3/4 c4 d8 f g16 a g f#")
 #a = corpus.parse('bwv66.6')
 
+b.write('midi', fp='sample_midi.midi')
 b.show('text')
+print("midi written to sample_midi.midi")
 
 #spa = midi.realtime.StreamPlayer(a)
 spb = midi.realtime.StreamPlayer(b)
 
 #spa.play()
 spb.play()
-b.write('midi', fp='sample_midi.midi')
 
 # tnc = tinyNotation.Converter("tinynotation: 5/2 c4 d8 f g16 a2 g f#").parse().stream
 #tnc.show('text')

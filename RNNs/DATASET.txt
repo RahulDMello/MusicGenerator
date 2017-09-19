@@ -1,0 +1,3 @@
+http://www-etud.iro.umontreal.ca/~boulanni/icml2012
+
+i am using the piano-midi.de's piano-roll.pickle file for dataset

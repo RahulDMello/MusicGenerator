@@ -1,0 +1,45 @@
+L:1/4
+K:G
+
+symbols
+A B C D E F G
+a b c d e f g
+
+Add ons
+"A"
+A/
+A1 A2 A4 A8 A16
+A# A-
+
+complicated expression
+A/2-
+
+old:
+0000000000000000(00000)00000
+AaBbCcDdEeFfGgZz(12486)"/#.-
+
+new:
+00000100000000000000(00000)0
+AaBbCcDdEeFfGgZz#.-/(12486)"
+
+
+i will use 4 input pattern to guess the 5th note
+so architecture would be something like
+26 input per note each note going from 26 input layer to four individual 8 input hidden layer
+the 4 separate input->hidden layers will then combine to a common 12 unit hidden layer
+from there it will pass to a final 26 unit output layer
+
+future testing:
+i will try out deep belief nets at somepoint
+i also wanna try pretty much the same architecture but instead of using a single additive cost function, i would like to train 3 separate output models with different cost functions and optimizations
+i also wanna try some mixure of 2 models and then looking at a better average case using the trigram method
+also at some point try out a simple RNN
+
+128434
+
+
+understanding notes:
+ornament(~) followed by Aa-Gg(C D E F G A B c d e f g a b) followed by a coma(, - down one octave) or quote(' - up one octave)(note-length numerical)
+note length multiplies with L to give that note' length. to divide put a / infront so the position does matter 
+
+

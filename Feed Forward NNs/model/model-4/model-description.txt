@@ -1,0 +1,8 @@
+architecture is same as the last model
+changed cost function to use inbuilt softmax_cross_entropy_with_logits for A-Z and added that to logistic_cross_entropy_with_logits for the remaining units
+so i used a combined cost function
+
+it has been working really well so far.
+
+problems: still goes into loops sometimes. made a workaround in application.py for now but i wanna see if i can change cost function a little bit to increase cost if the output is similar to the provided inputs
+improvements: learn a little more about adam optimizer i dont think its the best one for me and collect more data. Also improve the cost function. get more data

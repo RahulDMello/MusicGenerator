@@ -1,0 +1,6 @@
+loop de loop poop poop poop
+
+it has perfected the art of loop through shit
+this one has same architecture but i am training 2 different output layer with 2 different cost function both use there separate adam optimer. it converges pretty good and the accuracy is awesome
+
+solution: i think i will add a random layer so that the zeros have a small input instead of being zero

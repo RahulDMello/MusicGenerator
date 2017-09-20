@@ -1,0 +1,3 @@
+A RNN with 1 layer of 128 hidden state LSTM cells 
+trained using 3 previous notes
+goes into loops after 5 notes

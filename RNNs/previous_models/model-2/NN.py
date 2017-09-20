@@ -1,11 +1,10 @@
 import pickle
 import tensorflow as tf
 import numpy as np
-from sklearn.utils import shuffle
 
 each_note_size = 89
 lowest_note_number = 21
-max_time_step = 11
+max_time_step = 3
 
 def get_one_hot(data):
     temp = np.array(data)
@@ -29,6 +28,7 @@ def get_one_hot_list(data):
 def collect_input(lst):
     input = []
     temp = []
+    curr_time_step = 1
     for i in range(len(lst) - max_time_step):
         temp = []
         for j in range(max_time_step):
@@ -55,7 +55,7 @@ def seq_length(sequence):
 def nn_model(data, config):
     cells = []
     for i in range(config['num_layers']):
-        cell = tf.nn.rnn_cell.LSTMCell(config['hidden_state'][i], activation=tf.nn.relu)
+        cell = tf.nn.rnn_cell.LSTMCell(config['hidden_state'][i])
         cells.append(cell)
     cell = tf.nn.rnn_cell.MultiRNNCell(cells)
     
@@ -85,7 +85,6 @@ def train_nn(x, y, X, Y, hm_epochs, config, test):
         saver = tf.train.Saver()
         print('starting training.')
         for epoch in range(hm_epochs):
-            X, Y = shuffle(X, Y)
             epoch_loss = 0
             for ind in range(int(config['n_examples']/config['batch_size'])):
                 epoch_x, epoch_y = X[ind*batch_size:ind*batch_size+batch_size], Y[ind*batch_size:ind*batch_size+batch_size]
@@ -139,10 +138,10 @@ print(input_test[:2])
 print("output")
 print(output_test[:2])
 '''
-n_epochs = 10
+n_epochs = 15
 batch_size = len(input_train)//200
 
-config = {'num_layers': 2, 'hidden_state': [100, 100], 'n_output': 89, 'n_examples': len(input_train), 'batch_size': batch_size, 'learning_rate': 0.01}
+config = {'num_layers': 1, 'hidden_state': [128], 'n_output': 89, 'n_examples': len(input_train), 'batch_size': batch_size, 'learning_rate': 0.05}
 x  = tf.placeholder('float',[None, max_time_step, 89], name="input")
 y = tf.placeholder('float')
 train_nn(x, y, input_train, output_train, n_epochs, config, {'input': input_test, 'output': output_test})
@@ -151,10 +150,10 @@ train_nn(x, y, input_train, output_train, n_epochs, config, {'input': input_test
 
 """
 Note to self:
-    change data input timesteps number
+    change data input timesteps from 1 to a bigger number
+    change the reshape of output in nn_model to support more timesteps
     experiment with different learning rates
     experiment with number of hidden layers and states in each layer
-    properly shuffle the data
 """
 
 

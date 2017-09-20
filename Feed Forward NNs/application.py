@@ -115,6 +115,5 @@ for _ in range(150):
 sampleFile.write("\n")
 print("midi exported to sample.abc")
 sampleFile.close()
-    
 
 

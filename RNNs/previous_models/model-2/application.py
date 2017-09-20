@@ -5,7 +5,6 @@ from midiutil import MIDIFile
 lowest_note_number = 21
 end_time_step = 88 + lowest_note_number
 each_note_size = 89
-num_input_note = 11
 
 def get_note_as_one_hot(data):
     temp = np.array(data)
@@ -39,21 +38,11 @@ x = graph.get_tensor_by_name("input:0")
 output = graph.get_tensor_by_name("output:0")
 
 X = []
-X.append(get_note_as_one_hot(36))
-X.append(get_note_as_one_hot(48))
+X.append(get_note_as_one_hot(55))
+X.append(get_note_as_one_hot(79))
 X.append(get_note_as_one_hot(end_time_step))
-X.append(get_note_as_one_hot(36))
-X.append(get_note_as_one_hot(48))
-X.append(get_note_as_one_hot(60))
-X.append(get_note_as_one_hot(64))
-X.append(get_note_as_one_hot(67))
-X.append(get_note_as_one_hot(end_time_step))
-X.append(get_note_as_one_hot(31))
-X.append(get_note_as_one_hot(43))
-X= np.reshape(X,[1,num_input_note,89])
-lst = []
-for i in range(num_input_note):
-    lst.append(get_note_from_one_hot(X[0][i]))
+X= np.reshape(X,[1,3,89])
+lst = [get_note_from_one_hot(X[0][0]), get_note_from_one_hot(X[0][1]), get_note_from_one_hot(X[0][2])]
 
 track    = 0
 channel  = 0
@@ -64,14 +53,10 @@ volume   = 100 # 0-127, as per the MIDI standard
     
 for _ in range(150):
     y = sess.run([output], feed_dict = {x: X})
-    note = get_note_from_one_hot(y)    # try sample from a probability distribution
+    note = get_note_from_one_hot(y)
+    # print(note)
     lst.append(note)
-    for i in range(num_input_note - 1):
-        X[0][i] = X[0][i+1]
-    X[0][num_input_note - 1] = get_note_as_one_hot(note)
-    # print(get_note_from_one_hot(X[0][0]))
-    print(note)
-    
+    X[0][0], X[0][1], X[0][2] = X[0][1], X[0][2], get_note_as_one_hot(note)
 
 MyMIDI = MIDIFile(1, adjust_origin=False)
 MyMIDI.addTempo(track,time, tempo)
@@ -81,12 +66,14 @@ print(np.shape(degree_list))
 for i in range(len(degree_list)):
     for j in range(len(degree_list[i])):
         for pitch in degree_list[i][j]:
-            # print(pitch)
+            print(pitch)
             MyMIDI.addNote(track, channel, pitch, time, duration, volume)
-            time = time + 1/(12 if (len(degree_list[i][j])) > 12 else (len(degree_list[i][j])))
+            time = time + 1/(4 if (2*len(degree_list[i][j])) > 8 else (2*len(degree_list[i][j])))
 
-with open("sample.mid", "wb") as output_file:
+with open("major-scale.mid", "wb") as output_file:
     MyMIDI.writeFile(output_file)
+
+
 
 
 

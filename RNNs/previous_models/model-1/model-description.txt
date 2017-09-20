@@ -1,0 +1,3 @@
+honestly i havn't even tested this model just wanted to save this up as the RNN is atleast training although painfully slowly
+current input is a single note. output is obviously a single note as well.
+future models i am hoping to select an appropriate number of notes for input.

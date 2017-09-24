@@ -5,7 +5,7 @@ from midiutil import MIDIFile
 lowest_note_number = 21
 end_time_step = 88 + lowest_note_number
 each_note_size = 89
-num_input_note = 7
+num_input_note = 11
 
 def get_note_as_one_hot(data):
     temp = np.array(data)
@@ -46,12 +46,10 @@ X.append(get_note_as_one_hot(36))
 X.append(get_note_as_one_hot(48))
 X.append(get_note_as_one_hot(60))
 X.append(get_note_as_one_hot(64))
-'''
 X.append(get_note_as_one_hot(67))
 X.append(get_note_as_one_hot(end_time_step))
 X.append(get_note_as_one_hot(31))
 X.append(get_note_as_one_hot(43))
-'''
 X= np.reshape(X,[1,num_input_note,89])
 lst = []
 for i in range(num_input_note):

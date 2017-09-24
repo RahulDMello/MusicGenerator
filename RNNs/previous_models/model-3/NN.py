@@ -1,4 +1,3 @@
-# RNN IMPLEMENTATION
 import pickle
 import tensorflow as tf
 import numpy as np
@@ -6,7 +5,7 @@ from sklearn.utils import shuffle
 
 each_note_size = 89
 lowest_note_number = 21
-max_time_step = 7
+max_time_step = 11
 
 def get_one_hot(data):
     temp = np.array(data)
@@ -78,7 +77,7 @@ def cost_function(target, prediction):
 def train_nn(x, y, X, Y, hm_epochs, config, test):
     prediction = nn_model(x, config)
     cost = tf.reduce_mean( tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y) )
-    optimizer = tf.train.AdadeltaOptimizer(learning_rate=config['learning_rate']).minimize(cost)
+    optimizer = tf.train.AdamOptimizer(learning_rate=config['learning_rate']).minimize(cost)
     prediction = tf.nn.softmax(prediction, name = "output")
     
     with tf.Session() as sess:
@@ -143,7 +142,7 @@ print(output_test[:2])
 n_epochs = 10
 batch_size = len(input_train)//200
 
-config = {'num_layers': 4, 'hidden_state': [128, 64, 64, 128], 'n_output': 89, 'n_examples': len(input_train), 'batch_size': batch_size, 'learning_rate': 0.3}
+config = {'num_layers': 2, 'hidden_state': [100, 100], 'n_output': 89, 'n_examples': len(input_train), 'batch_size': batch_size, 'learning_rate': 0.01}
 x  = tf.placeholder('float',[None, max_time_step, 89], name="input")
 y = tf.placeholder('float')
 train_nn(x, y, input_train, output_train, n_epochs, config, {'input': input_test, 'output': output_test})
@@ -156,7 +155,6 @@ Note to self:
     experiment with different learning rates
     experiment with number of hidden layers and states in each layer
     properly shuffle the data
-    [1, 0.5, 0.3, 0.1, 0.05, 0.03, 0.01, 0.005, 0.003, 0.001]
 """
 
 

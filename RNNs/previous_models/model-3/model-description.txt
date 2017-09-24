@@ -1,0 +1,2 @@
+more testing.
+learning seems to slow down a lot even after changing activation function from tanh to relu

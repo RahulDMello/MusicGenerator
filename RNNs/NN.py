@@ -3,6 +3,7 @@ import pickle
 import tensorflow as tf
 import numpy as np
 from sklearn.utils import shuffle
+import time
 
 each_note_size = 89
 lowest_note_number = 21
@@ -41,7 +42,7 @@ def initialize_as_one_hot(data):
     lst = get_one_hot_list(data)
     input = collect_input(lst)
     output = lst[max_time_step:]
-    return input, output
+    return input, output	
 
 def seq_length(sequence):
     print("seq_length")
@@ -73,12 +74,12 @@ def nn_model(data, config):
     
 def cost_function(target, prediction):
     cross_entropy = -tf.reduce_sum(target * tf.log(tf.clip_by_value(prediction,1e-10,1.0)))
-    return cross_Entropy
+    return cross_entropy
     
 def train_nn(x, y, X, Y, hm_epochs, config, test):
     prediction = nn_model(x, config)
     cost = tf.reduce_mean( tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y) )
-    optimizer = tf.train.AdadeltaOptimizer(learning_rate=config['learning_rate']).minimize(cost)
+    optimizer = tf.train.AdamOptimizer(learning_rate=config['learning_rate']).minimize(cost)
     prediction = tf.nn.softmax(prediction, name = "output")
     
     with tf.Session() as sess:
@@ -113,7 +114,7 @@ dataset = pickle.load(file)
 dataset obtained from: http://www-etud.iro.umontreal.ca/~boulanni/icml2012
 note number reference: http://www.electronics.dit.ie/staff/tscarff/Music_technology/midi/midi_note_numbers_for_octaves.htm
 Dataset Notes:
-datase has 3 list train, valid and test
+database has 3 list train, valid and test
 each list has sequences
 each sequence has time steps
 each time step has midi note numbers of varying length
@@ -140,14 +141,15 @@ print(input_test[:2])
 print("output")
 print(output_test[:2])
 '''
-n_epochs = 10
+n_epochs = 20
 batch_size = len(input_train)//200
 
-config = {'num_layers': 4, 'hidden_state': [128, 64, 64, 128], 'n_output': 89, 'n_examples': len(input_train), 'batch_size': batch_size, 'learning_rate': 0.3}
+config = {'num_layers': 5, 'hidden_state': [256, 256, 256, 256, 256], 'n_output': 89, 'n_examples': len(input_train), 'batch_size': batch_size, 'learning_rate': 0.2}
 x  = tf.placeholder('float',[None, max_time_step, 89], name="input")
 y = tf.placeholder('float')
+start_time = time.time()
 train_nn(x, y, input_train, output_train, n_epochs, config, {'input': input_test, 'output': output_test})
-
+print("--- %s seconds ---" % (time.time() - start_time))
 
 
 """
